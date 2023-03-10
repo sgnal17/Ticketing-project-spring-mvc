@@ -7,7 +7,7 @@ import java.util.Map;
 
 public abstract class AbstractMapService <T,ID>{
 
-    Map<ID,T> map=new HashMap<>();
+    Map<ID,T> map=new HashMap<>(); //Custom DB
 
     T save(ID id,T object){
         map.put(id,object);
