@@ -1,7 +1,7 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.ProjectDTO;
-import com.cydeo.dto.UserDTO;
+
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequestMapping("/project")
@@ -33,9 +32,7 @@ public class ProjectController {
         return "project/create";
     }
 
-//    private List<UserDTO> findAllManagers(){
-//     return   userService.findAll().stream().filter(u->u.getRole().equals("Manager")).map(e->e.getFirstName()+" "+e.getLastName()).collect(Collectors.toList());
-//    }
+
 
 
     @PostMapping("/create")
