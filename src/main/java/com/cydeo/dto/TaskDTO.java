@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class TaskDTO {
     private Long id;
     private ProjectDTO projectDTO;
-    private UserDTO assignedManager;
+    private UserDTO assignedEmployee;
     private String taskSubject;
     private String taskDetail;
     private LocalDate assignedDate;
