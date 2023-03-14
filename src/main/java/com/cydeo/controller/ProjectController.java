@@ -6,11 +6,7 @@ import com.cydeo.service.ProjectService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -27,17 +23,23 @@ public class ProjectController {
     @GetMapping("/create")
     public String create(Model model){
         model.addAttribute("project",new ProjectDTO());
-        model.addAttribute("managers",userService.findAll());
+        model.addAttribute("managers",userService.findManagers());
         model.addAttribute("projects",projectService.findAll());
         return "project/create";
     }
-
-
-
 
     @PostMapping("/create")
     public String insert(@ModelAttribute("project") ProjectDTO projectDTO){
         projectService.save(projectDTO);
         return "redirect:/project/create";
     }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteProject(@PathVariable("id") String id ){
+        projectService.deleteById(id);
+
+        return "redirect:/project/create";
+    }
+
 }
