@@ -23,24 +23,50 @@ public class TaskController {
     }
 
     @GetMapping("/create")
-    public String createTask(Model model){
-    model.addAttribute("task",new TaskDTO());
-    model.addAttribute("taskList",taskService.findAll());
-    model.addAttribute("projects",projectService.findAll());
-    model.addAttribute("employees",userService.findAll());
+    public String createTask(Model model) {
+        model.addAttribute("task", new TaskDTO());
+        model.addAttribute("taskList", taskService.findAll());
+        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("employees", userService.findEmployees());
         return "task/create";
     }
 
     @PostMapping("/create")
-    public String saveTask(@ModelAttribute("task") TaskDTO taskDTO){
+    public String saveTask(@ModelAttribute("task") TaskDTO taskDTO) {
 
         taskService.save(taskDTO);
         return "redirect:/task/create";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") Long id){
+    public String deleteTask(@PathVariable("id") Long id) {
         taskService.deleteById(id);
         return "redirect:/task/create";
     }
+
+    @GetMapping("/update/{id}")
+    public String editTask(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("task", taskService.findById(id));
+        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("employees", userService.findEmployees());
+        model.addAttribute("taskList", taskService.findAll());
+
+        return "task/update";
+    }
+//      First way
+//    @PostMapping("/update/{id}")
+//    public String updateTask(@PathVariable("id") Long id,@ModelAttribute("task") TaskDTO taskDTO){
+//        taskDTO.setId(id);
+//        taskService.update(taskDTO);
+//        return "redirect:/task/create";
+//    }
+
+    //   Second way
+    @PostMapping("/update/{id}") // Spring understand if this id field name and objects field's name is same
+    public String updateTask(TaskDTO taskDTO) {
+        taskService.update(taskDTO);        // it is going to set id automatically
+        return "redirect:/task/create";
+    }
+
+
 }
