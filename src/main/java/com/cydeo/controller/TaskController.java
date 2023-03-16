@@ -70,17 +70,28 @@ public class TaskController {
     }
 
     @GetMapping("/pending")
-    public String getPendingTasks(Model model){
-        model.addAttribute("taskList",taskService.findAllTasksByIsNot(Status.COMPLETE));
+    public String getPendingTasks(Model model) {
+        model.addAttribute("taskList", taskService.findAllTasksByIsNot(Status.COMPLETE));
 
 
         return "task/pending-tasks";
     }
 
-    @GetMapping("status/update/{id}")
-    public String updateStatus(){
-
+    @GetMapping("status/employee/update/{id}")
+    public String editTaskStatus(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("task", taskService.findById(id));
+        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("employees", userService.findEmployees());
+        model.addAttribute("statuses",Status.values());
+        model.addAttribute("tasks",taskService.findAllTasksByIsNot(Status.COMPLETE));
         return "task/status-update";
+    }
+
+    @PostMapping("/employee/update/{id}")
+    public String updateTaskStatus(@ModelAttribute("task")TaskDTO taskDTO){
+        taskService.updateStatus(taskDTO);
+
+        return "redirect:/task/pending";
     }
 
 
