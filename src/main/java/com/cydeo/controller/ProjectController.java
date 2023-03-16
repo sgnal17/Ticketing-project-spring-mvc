@@ -2,6 +2,7 @@ package com.cydeo.controller;
 
 import com.cydeo.dto.ProjectDTO;
 
+import com.cydeo.dto.UserDTO;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -61,6 +62,16 @@ public class ProjectController {
     public String updateProject(@ModelAttribute("project") ProjectDTO projectDTO){
         projectService.save(projectDTO);
         return "redirect:/project/create";
+    }
+
+    @GetMapping("/manager/project-status")
+    public String getProjectsByManager(Model model){
+//        UserDTO manager=userService.findById("john@cydeo.com");
+//
+//        model.addAttribute("projects",projectService.getCountedListOfProjectDto(manager));
+
+
+        return "manager/project-status";
     }
 
 }
