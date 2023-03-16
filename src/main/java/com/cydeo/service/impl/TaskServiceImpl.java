@@ -12,16 +12,16 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
-public class TaskServiceImpl extends AbstractMapService<TaskDTO,Long> implements TaskService {
+public class TaskServiceImpl extends AbstractMapService<TaskDTO, Long> implements TaskService {
     @Override
     public TaskDTO save(TaskDTO taskDTO) {
-        if(taskDTO.getAssignedDate()==null)
+        if (taskDTO.getAssignedDate() == null)
             taskDTO.setAssignedDate(LocalDate.now());
-        if(taskDTO.getTaskStatus()==null)
+        if (taskDTO.getTaskStatus() == null)
             taskDTO.setTaskStatus(Status.OPEN);
-        if(taskDTO.getId()==null)
+        if (taskDTO.getId() == null)
             taskDTO.setId(new Random().nextLong());
-        return super.save(taskDTO.getId(),taskDTO);
+        return super.save(taskDTO.getId(), taskDTO);
     }
 
     @Override
@@ -41,24 +41,30 @@ public class TaskServiceImpl extends AbstractMapService<TaskDTO,Long> implements
 
     @Override
     public void update(TaskDTO taskDTO) {
-        TaskDTO foundTask=findById(taskDTO.getId());
+        TaskDTO foundTask = findById(taskDTO.getId());
         taskDTO.setTaskStatus(foundTask.getTaskStatus());
         taskDTO.setAssignedDate(foundTask.getAssignedDate());
-        super.update(taskDTO.getId(),taskDTO);
+        super.update(taskDTO.getId(), taskDTO);
     }
 
 
     @Override
     public List<TaskDTO> findTasksByManager(UserDTO manager) {
-        return findAll().stream().filter(task->task.getProjectDTO().getAssignedManager().equals(manager)).collect(Collectors.toList());
+        return findAll().stream().filter(task -> task.getProjectDTO().getAssignedManager().equals(manager)).collect(Collectors.toList());
     }
 
     @Override
     public List<TaskDTO> findAllTasksByIsNot(Status status) {
-        findAll().stream().filter(task->!(task.getTaskStatus().equals(Status.COMPLETE))).collect(Collectors.toList());
+        findAll().stream().filter(task -> !(task.getTaskStatus().equals(Status.COMPLETE))).collect(Collectors.toList());
 
-        return findAll().stream().filter(task->!(task.getTaskStatus()
-                .equals(Status.COMPLETE)))
+        return findAll().stream().filter(task -> !(task.getTaskStatus()
+                        .equals(Status.COMPLETE)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateStatus(TaskDTO taskDTO) {
+        findById(taskDTO.getId()).setTaskStatus(taskDTO.getTaskStatus());
+        update(taskDTO);
     }
 }
