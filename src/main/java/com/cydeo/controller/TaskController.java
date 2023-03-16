@@ -77,5 +77,11 @@ public class TaskController {
         return "task/pending-tasks";
     }
 
+    @GetMapping("status/update/{id}")
+    public String updateStatus(){
+
+        return "task/status-update";
+    }
+
 
 }
